@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium.Chrome;
+﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
 using SpecFlowPageObjectNew.Drivers;
 using SpecFlowPageObjectNew.Support;
 
@@ -7,6 +8,14 @@ namespace SpecFlowPageObjectNew
     [Binding]
     public sealed class Hooks : DriverHelper
     {
+        private readonly ScenarioContext _scenarioContext;
+
+        // ✅ Dependency injection (replaces ScenarioContext.Current)
+        public Hooks(ScenarioContext scenarioContext)
+        {
+            _scenarioContext = scenarioContext;
+        }
+
         [BeforeScenario]
         public void BeforeScenario()
         {
@@ -15,28 +24,41 @@ namespace SpecFlowPageObjectNew
 
             var options = new ChromeOptions();
 
-            // ✅ REQUIRED for GitHub Actions / Linux CI
+            // CI-safe options
             options.AddArguments("--headless=new");
             options.AddArguments("--no-sandbox");
             options.AddArguments("--disable-dev-shm-usage");
             options.AddArguments("--window-size=1920,1080");
-
-            // Optional but safe
             options.AddArguments("--incognito");
 
-            // ✅ Selenium Manager will handle driver automatically
+            // Selenium Manager handles driver automatically
             Driver = new ChromeDriver(options);
         }
 
         [AfterScenario]
         public void AfterScenario()
         {
-            if (Driver != null)
+            // ✅ Take screenshot only if test failed
+            if (_scenarioContext.TestError != null)
             {
-                Driver.Quit();
-                Driver.Dispose();
-                Driver = null;
+                try
+                {
+                    var screenshot = ((ITakesScreenshot)Driver!).GetScreenshot();
+                    var path = Path.Combine(AppContext.BaseDirectory, "screenshot.png");
+
+                    screenshot.SaveAsFile(path);
+
+                    AllureHelper.AttachScreenshot(path);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Screenshot capture failed: " + ex.Message);
+                }
             }
+
+            Driver?.Quit();
+            Driver?.Dispose();
+            Driver = null;
         }
     }
 }
