@@ -69,25 +69,25 @@ namespace SpecFlowPageObjectNew.StepDefinitions
             Assert.Multiple(() =>
             {
                 Assert.AreEqual((string)expected.FullName,
-                    GetValue(actual?.FirstOrDefault()?.Text));
+                    GetValue(actual?.FirstOrDefault()?.Text) ?? string.Empty);
 
                 Assert.AreEqual((string)expected.Email,
-                    GetValue(actual?.ElementAtOrDefault((int)IntValue.One)?.Text));
+                    GetValue(actual?.ElementAtOrDefault((int)IntValue.One)?.Text) ?? string.Empty);
 
                 Assert.AreEqual((string)expected.CurrentAddress,
-                    GetValue(actual?.ElementAtOrDefault((int)IntValue.Two)?.Text));
+                    GetValue(actual?.ElementAtOrDefault((int)IntValue.Two)?.Text) ?? string.Empty);
 
                 Assert.AreEqual((string)expected.PermanentAddress,
-                    GetValue(actual?.ElementAtOrDefault((int)IntValue.Three)?.Text));
+                    GetValue(actual?.ElementAtOrDefault((int)IntValue.Three)?.Text) ?? string.Empty);
             });
         }
 
-        private static string GetValue(string text)
+        private static string? GetValue(string? text)
         {
             if (string.IsNullOrWhiteSpace(text))
                 return null;
 
-            var parts = text.Split(':', 2); // prevent index errors
+            var parts = text.Split(':', 2);
             return parts.Length > 1 ? parts[1].Trim() : null;
         }
     }
