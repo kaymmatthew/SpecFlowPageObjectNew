@@ -27,29 +27,19 @@ jobs:
       - name: Build
         run: dotnet build --no-restore
 
-      - name: Run tests (generate Allure results)
+      # ✅ Run tests (Allure results will be generated automatically if Allure.NUnit is installed)
+      - name: Run tests
         run: dotnet test --no-build --verbosity normal
 
-      # ✅ Install Java (required for Allure)
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
-      # ✅ Install Allure CLI
-      - name: Install Allure
-        run: |
-          wget https://github.com/allure-framework/allure2/releases/latest/download/allure-2.27.0.tgz
-          tar -zxvf allure-2.27.0.tgz
-          sudo mv allure-2.27.0 /opt/allure
-          sudo ln -s /opt/allure/bin/allure /usr/bin/allure
-
-      # ✅ Generate report
+      # ✅ Generate Allure report (no manual Java/install needed)
       - name: Generate Allure Report
-        run: allure generate --clean allure-results -o allure-report
+        uses: simple-elf/allure-report-action@v1.7
+        if: always()
+        with:
+          allure_results: allure-results
+          allure_report: allure-report
 
-      # ✅ Upload report
+      # ✅ Upload report as artifact
       - name: Upload Allure Report
         if: always()
         uses: actions/upload-artifact@v4
