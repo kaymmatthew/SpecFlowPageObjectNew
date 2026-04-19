@@ -27,18 +27,18 @@ jobs:
       - name: Build
         run: dotnet build --no-restore
 
-      # ✅ Run tests (generates allure-results if Allure.NUnit is installed)
+      # ✅ Run tests
       - name: Run tests
         run: dotnet test --no-build --verbosity normal
 
-      # ✅ Install Java (needed for Allure CLI)
+      # ✅ Setup Java (required for Allure CLI)
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
 
-      # ✅ Install Allure (stable version)
+      # ✅ Install Allure CLI
       - name: Install Allure
         run: |
           ALLURE_VERSION=2.24.0
@@ -47,14 +47,14 @@ jobs:
           sudo mv allure-$ALLURE_VERSION /opt/allure
           sudo ln -s /opt/allure/bin/allure /usr/bin/allure
 
-      # ✅ Generate Allure report
+      # ✅ Generate report
       - name: Generate Allure Report
         run: allure generate allure-results --clean -o allure-report
 
-      # ✅ Upload report
-      - name: Upload Allure Report
+      # 🚀 Deploy report to GitHub Pages (LIVE URL)
+      - name: Deploy Allure Report to GitHub Pages
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          name: allure-report
-          path: allure-report
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: allure-report
