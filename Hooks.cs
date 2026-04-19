@@ -1,8 +1,6 @@
-﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
+﻿using OpenQA.Selenium.Chrome;
 using SpecFlowPageObjectNew.Drivers;
 using SpecFlowPageObjectNew.Support;
-using TechTalk.SpecFlow;
 
 namespace SpecFlowPageObjectNew
 {

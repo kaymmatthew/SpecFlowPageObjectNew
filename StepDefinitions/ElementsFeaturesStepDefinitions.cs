@@ -1,7 +1,5 @@
 using NUnit.Framework;
 using SpecFlowPageObjectNew.Pages;
-using System;
-using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
 using static SpecFlowPageObjectNew.EnumExtensions.EnumValues;
 
@@ -46,20 +44,6 @@ namespace SpecFlowPageObjectNew.StepDefinitions
             _homepage.ClickSubmitBtn(); 
         }
 
-        //[Then(@"following data has been added")]
-        //public void ThenFollowingDataHasBeenAdded(Table table)
-        //{
-        //    dynamic expected = table.CreateDynamicInstance();
-        //    var actual = _homepage.getelementsValue();
-        //    Assert.Multiple(() =>
-        //    {
-        //        Assert.AreEqual(expected.FullName, actual?.FirstOrDefault()?.Text.Split(":")[(int)IntValue.One]);
-        //        Assert.AreEqual(expected.Email, actual?.ElementAtOrDefault((int)IntValue.One)?.Text.Split(":")[(int)IntValue.One]);
-        //        Assert.AreEqual(expected.CurrentAddress, actual?.ElementAtOrDefault((int)IntValue.Two)?.Text.Split(":")[(int)IntValue.One]);
-        //        Assert.AreEqual(expected.PermanentAddress, actual?.ElementAtOrDefault((int)IntValue.Three)?.Text.Split(":")[(int)IntValue.One]);
-        //    });
-
-        //}
         [Then(@"following data has been added")]
         public void ThenFollowingDataHasBeenAdded(Table table)
         {

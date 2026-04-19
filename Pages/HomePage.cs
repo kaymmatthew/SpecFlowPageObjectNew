@@ -1,5 +1,4 @@
-﻿using NUnit.Framework;
-using OpenQA.Selenium;
+﻿using OpenQA.Selenium;
 using SpecFlowPageObjectNew.Drivers;
 using SpecFlowPageObjectNew.Extensions;
 using SpecFlowTestOctoberProject.Extensions;
@@ -14,7 +13,7 @@ namespace SpecFlowPageObjectNew.Pages
 
         private IWebElement? textBox => Driver?.FindthisElement(By.XPath("//span[@class='text'][.='Text Box']")).Single;
 
-        private IList<IWebElement>? Output => Driver.FindthisElement(By.XPath("//div[@id='output']//p")).multiple;
+        private IList<IWebElement>? Output => Driver!.FindthisElement(By.XPath("//div[@id='output']//p")).multiple;
 
         private IWebElement? FullName => Driver?.FindthisElement(By.Id("userName")).Single;
         private IWebElement? Email => Driver?.FindthisElement(By.Id("userEmail")).Single;
@@ -42,7 +41,7 @@ namespace SpecFlowPageObjectNew.Pages
 
         }
 
-        public void ClickSubmitBtn() => submitBtn?.ClickViaJs(Driver);
+        public void ClickSubmitBtn() => submitBtn?.ClickViaJs(Driver!);
 
         public IList<IWebElement>? getelementsValue() => Output?.ToList();
     }
